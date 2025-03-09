@@ -46,10 +46,13 @@ def show_brightness_histogram(img_path):
 
 
 def improve_contrast(img_path, output_path):
-    img = Image.open(img_path)
+    img_cv2 = cv2.imread(img_path)
+    img = cv2.cvtColor(img_cv2, cv2.COLOR_BGR2RGB)
     # підвищення контрасту
-    img_contrast = img.point(lambda p: p * 1.5)
-    img_contrast.save(output_path)
+    contrast = 1.5
+    img_contrast = cv2.addWeighted(img, contrast, np.zeros(img.shape, img.dtype), 0, 0)
+
+    cv2.imwrite(output_path, img_contrast)
 
     plt.imshow(img_contrast)
     plt.title("Покращена контрасність")
