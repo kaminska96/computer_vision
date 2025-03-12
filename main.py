@@ -181,6 +181,80 @@ def grabcut_segmentation(img_path):
     plt.show()
 
 
+def detect_edges(img_path):
+    img = cv2.imread(img_path, 0)
+    # алгоритм Canny
+    edges = cv2.Canny(img, 100, 200)
+
+    plt.imshow(edges, cmap='gray')
+    plt.title("Контури облич (Canny)")
+    plt.axis('off')
+
+    plt.show()
+
+
+def sift_detector(img_path):
+    img = cv2.imread(img_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # SIFT детектор
+    sift = cv2.SIFT_create()
+    keypoints, descriptors = sift.detectAndCompute(gray, None)
+
+    img_sift = cv2.drawKeypoints(img, keypoints, None)
+
+    plt.imshow(cv2.cvtColor(img_sift, cv2.COLOR_BGR2RGB))
+    plt.title("SIFT Детектор")
+    plt.axis('off')
+
+    plt.show()
+
+
+def surf_detector(img_path):
+    img = cv2.imread(img_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    surf = cv2.xfeatures2d.SURF_create(400)
+    keypoints, descriptors = surf.detectAndCompute(gray, None)
+
+    img_surf = cv2.drawKeypoints(img, keypoints, None)
+
+    plt.imshow(cv2.cvtColor(img_surf, cv2.COLOR_BGR2RGB))
+    plt.title("SURF Детектор")
+    plt.axis('off')
+
+    plt.show()
+
+
+def orb_detector(img_path):
+    img = cv2.imread(img_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # ORB детектор
+    orb = cv2.ORB_create()
+    keypoints, descriptors = orb.detectAndCompute(gray, None)
+
+    img_orb = cv2.drawKeypoints(img, keypoints, None, color=(0, 255, 0))
+
+    plt.imshow(cv2.cvtColor(img_orb, cv2.COLOR_BGR2RGB))
+    plt.title("ORB Детектор")
+    plt.axis('off')
+
+    plt.show()
+
+
+def hog_descriptor(img_path):
+    img = cv2.imread(img_path, 0)
+    hog = cv2.HOGDescriptor()
+
+    h = hog.compute(img)
+
+    plt.plot(h)
+    plt.title("HOG Дескриптори")
+
+    plt.show()
+
+
 image_path = "pic2.jpg"
 output_contrast_image_path = "contrast_pic2.jpg"
 output_sharpened_image_path = "sharpened_pic2.jpg"
@@ -198,3 +272,8 @@ sharpen_image(image_path, output_sharpened_image_path)
 threshold_segmentation(image_path)
 watershed_segmentation(image_path)
 grabcut_segmentation(image_path)
+# 5
+detect_edges(image_path)
+sift_detector(image_path)
+orb_detector(image_path)
+hog_descriptor(image_path)
